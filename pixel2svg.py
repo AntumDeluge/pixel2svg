@@ -63,8 +63,8 @@ if __name__ == "__main__":
 
     argument_parser.add_option("--squaresize",
                                type = "int",
-                               default = 40,
-                               help = "Width and height of vector squares in pixels, default: 40")
+                               default = 1,
+                               help = "Width and height of vector squares in pixels, default: 1")
 
     argument_parser.add_option("--overlap",
                                action = "store_const",
