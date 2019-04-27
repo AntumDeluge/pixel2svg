@@ -61,12 +61,12 @@ if __name__ == "__main__":
                                             usage = "pixel2svg [--overlap] IMAGEFILE",
                                             version = VERSION)
 
-    argument_parser.add_option("--squaresize",
+    argument_parser.add_option("--squaresize", "-s",
                                type = "int",
                                default = 1,
                                help = "Width and height of vector squares in pixels, default: 1")
 
-    argument_parser.add_option("--overlap",
+    argument_parser.add_option("--overlap", "-o",
                                action = "store_const",
                                const = 1,
                                default = 0,
