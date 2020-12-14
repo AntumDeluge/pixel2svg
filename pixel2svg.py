@@ -58,7 +58,7 @@ if __name__ == "__main__":
     #arguments = argument_parser.parse_args()
 
     argument_parser = optparse.OptionParser(description="Convert pixel art to SVG",
-                                            usage = "pixel2svg [--overlap] IMAGEFILE",
+                                            usage = "pixel2svg [--squaresize] [--overlap] [--out] IMAGEFILE",
                                             version = VERSION)
 
     argument_parser.add_option("--squaresize", "-s",
@@ -66,11 +66,15 @@ if __name__ == "__main__":
                                default = 1,
                                help = "Width and height of vector squares in pixels, default: 1")
 
-    argument_parser.add_option("--overlap", "-o",
+    argument_parser.add_option("--overlap",
                                action = "store_const",
                                const = 1,
                                default = 0,
                                help = "If given, overlap vector squares by 1px")
+
+    argument_parser.add_option("--out", "-o",
+							   type = "str",
+							   help = "Set the output filename")
 
     arguments, positional = argument_parser.parse_args()
 
@@ -97,7 +101,12 @@ if __name__ == "__main__":
 
     print("Read {0} pixels".format(len(rgb_values)))
 
-    svgdoc = svgwrite.Drawing(filename = os.path.splitext(positional[0])[0] + ".svg",
+    if arguments.out:
+        fname = arguments.out
+    else:
+        fname = os.path.splitext(positional[0])[0] + ".svg"
+
+    svgdoc = svgwrite.Drawing(filename = fname,
                               size = ("{0}px".format(width * arguments.squaresize),
                                       "{0}px".format(height * arguments.squaresize)))
 
