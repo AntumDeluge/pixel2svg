@@ -110,10 +110,6 @@ if __name__ == "__main__":
                               size = ("{0}px".format(width * arguments.squaresize),
                                       "{0}px".format(height * arguments.squaresize)))
 
-    # If --overlap is given, use a slight overlap to prevent inaccurate SVG rendering
-    rectangle_size = ("{0}px".format(arguments.squaresize + arguments.overlap),
-                      "{0}px".format(arguments.squaresize + arguments.overlap))
-
     rowcount = 0
 
     print("Will use an square overlap of {0}px".format(arguments.overlap))
@@ -132,20 +128,26 @@ if __name__ == "__main__":
             #
             if rgb_tuple[3] > 0:
 
-                rectangle_posn = ("{0}px".format(colcount * arguments.squaresize),
-                                  "{0}px".format(rowcount * arguments.squaresize))
                 rectangle_fill = svgwrite.rgb(rgb_tuple[0], rgb_tuple[1], rgb_tuple[2])
+
+                rect_start = (colcount * arguments.squaresize, rowcount * arguments.squaresize)
+                # If --overlap is given, use a slight overlap to prevent inaccurate SVG rendering
+                rect_size = (arguments.squaresize + arguments.overlap, arguments.squaresize + arguments.overlap)
+
+                rect_details = "M {0} {1} L {2} {1} L {2} {3} L {0} {3} L {0} {1} z".format(rect_start[0], rect_start[1], rect_start[0]+rect_size[0], rect_start[1]+rect_size[1])
 
                 alpha = rgb_tuple[3];
                 if alpha == 255:
-                    svgdoc.add(svgdoc.rect(insert = rectangle_posn,
-                                           size = rectangle_size,
-                                           fill = rectangle_fill))
+                    svgdoc.add(svgdoc.path(
+                                        d = rect_details,
+                                        fill = rectangle_fill,
+                                        stroke = "none"))
                 else:
-                    svgdoc.add(svgdoc.rect(insert = rectangle_posn,
-                                           size = rectangle_size,
-                                           fill = rectangle_fill,
-                                           opacity = alpha/float(255)))
+                    svgdoc.add(svgdoc.path(
+                                        d = rect_details,
+                                        fill = rectangle_fill,
+                                        stroke = "none",
+                                        opacity = alpha/float(255)))
 
             colcount = colcount + 1
 
